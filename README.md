@@ -45,6 +45,26 @@ https://console.cloud.google.com
      - `server.tomcat.remoteip.internal-proxies=`
      - `server.tomcat.remoteip.protocol-header-https-value=https`
 
+## 3. Run the App
+
+1. `cd frontend`
+2. `npm run dev`
+3. Start your Spring Boot app
+   - via your IDE or build and run the jar `java -jar backend/build/libs/spring-boot-google-oauth-nextjs-example-0.0.1-SNAPSHOT.jar`
+4. Visit `http://localhost:3000`
+5. Click Login
+   - follow the Google Login prompts
+6. Observe the intermediate redirect to your backend and immediate redirect to your frontend
+7. A JSESSIONID cookie will be available now
+   - these can be 'anonymous' token, if the login fails, dont get confused ;-)
+8. Pass this token along with any backend fetch to authorize your request
+9. Click logout
+   - Spring Boot will clear your backend session
+   - JSESSIONID cookie will have been deleted
+   - You should be redirected to `/`
+
+The backend provides a `me` GET endpoint (`backend/src/main/java/com/example/springboot/controller/AuthController.java`), that returns `yourself` - the authenticated user from the current request.
+
 ## Open Topics
 
 I cannot get CSRF / XSRF-Token to work. Therefore its disabled via the Spring Security config, not ideal, but also not a complete road-blocker. If you know how to get this to work with Spring Boot 3.x and e.g Next.JS, please contact me :)
