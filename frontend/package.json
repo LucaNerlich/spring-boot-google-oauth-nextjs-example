@@ -1,0 +1,35 @@
+{
+    "name": "spring-boot-google-oauth-nextjs-example-frontend",
+    "description": "spring-boot-google-oauth-nextjs-example Frontend",
+    "version": "0.1.0",
+    "private": true,
+    "scripts": {
+        "dev": "next dev --turbopack",
+        "build": "next build",
+        "start": "next start",
+        "lint": "next lint"
+    },
+    "dependencies": {
+        "babel-plugin-react-compiler": "^19.0.0-beta-9ee70a1-20241017",
+        "next": "^15.0.2",
+        "react": "19.0.0-rc-0bc30748-20241028",
+        "react-cookie": "^7.2.0",
+        "react-dom": "19.0.0-rc-0bc30748-20241028"
+    },
+    "devDependencies": {
+        "@types/node": "^20",
+        "@types/react": "npm:types-react@19.0.0-rc.1",
+        "@types/react-dom": "npm:types-react-dom@19.0.0-rc.1",
+        "eslint": "^8",
+        "eslint-config-next": "^15.0.2",
+        "typescript": "^5"
+    },
+    "engines": {
+        "node": "^20",
+        "npm": "^10"
+    },
+    "overrides": {
+        "@types/react": "npm:types-react@19.0.0-rc.1",
+        "@types/react-dom": "npm:types-react-dom@19.0.0-rc.1"
+    }
+}
