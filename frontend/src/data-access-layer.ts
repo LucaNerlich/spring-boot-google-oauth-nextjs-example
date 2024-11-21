@@ -1,7 +1,7 @@
 import 'server-only'
 
 import {cookies} from 'next/headers'
-import {AuthenticatedAccount} from "@/types/account/AuthenticatedAccount";
+import type {Account} from "@/types/account/Account";
 
 // https://nextjs.org/docs/app/building-your-application/authentication#creating-a-data-access-layer-dal
 export const verifySession = (async () => {
@@ -18,7 +18,7 @@ export const verifySession = (async () => {
     }
 
     if (cookieStore.has('JSESSIONID') && cookieStore.get('JSESSIONID')?.value != '') {
-        const account: AuthenticatedAccount = await getUser();
+        const account: Account = await getUser();
         console.log("account", account);
 
         return !(!account.id || account.banned);

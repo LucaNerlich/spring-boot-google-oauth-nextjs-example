@@ -1,23 +1,24 @@
 package com.example.springboot.domain.account;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.example.springboot.domain.AbstractEntity;
-import com.example.springboot.domain.PublicView;
-import jakarta.persistence.*;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.OneToMany;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.security.oauth2.core.oidc.user.DefaultOidcUser;
 
-import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Getter
 @NoArgsConstructor
-public class Account extends AbstractEntity implements PublicView<Account.PublicAccount> {
+public class Account extends AbstractEntity {
 
     private String name; // via provider
     @Setter
@@ -46,26 +47,5 @@ public class Account extends AbstractEntity implements PublicView<Account.Public
 
     public void addConnectedAccount(ConnectedAccount connectedAccount) {
         connectedAccounts.add(connectedAccount);
-    }
-
-    public PublicAccount toPublicView() {
-        return new PublicAccount(
-            getId(),
-            getCreatedAt(),
-            getUpdatedAt(),
-            getUsername(),
-            imageUrl,
-            "publicaccount"
-        );
-    }
-
-    public record PublicAccount(
-        Long id,
-        Instant createdAt,
-        Instant updatedAt,
-        String name,
-        String imageUrl,
-        String type
-    ) {
     }
 }
