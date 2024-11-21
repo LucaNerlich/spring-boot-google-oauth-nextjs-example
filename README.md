@@ -1,2 +1,47 @@
 # spring-boot-google-oauth-nextjs-example
 An example spring boot project that setups Google OAuth Login with a Next.JS 15 app.
+
+Many Spring Boot OAuth examples stop after getting the app to run on localhost and without a working logout.
+This example aims to not make the same mistake and to provide a production ready `Spring Boot + Google OAuth` app.
+
+Important files:
+
+1. [backend/src/main/java/com/example/springboot/config/SecurityConfig.java](backend/src/main/java/com/example/springboot/config/SecurityConfig.java)
+   - This is the main Spring Security Config file
+2. [backend/src/main/resources/application-postgres.properties](backend/src/main/resources/application-postgres.properties)
+   - Configures Spring and the Database connection
+3. [backend/src/main/java/com/example/springboot/auth/Oauth2LoginSuccessHandler.java](backend/src/main/java/com/example/springboot/auth/Oauth2LoginSuccessHandler.java)
+   - Overwrites the built-in login handler
+4. [backend/src/main/java/com/example/springboot/auth/Oauth2LogoutSuccessHandler.java](backend/src/main/java/com/example/springboot/auth/Oauth2LogoutSuccessHandler.java)
+   - Overwrites the built-in logout handler
+
+## 1. Setup a Google Cloud Console App
+
+https://console.cloud.google.com
+
+1. Create new "Login Data" - OAuth-Client-ID
+2. Add `http://localhost:8080/login/oauth2/code/google` to "Authorized Redirect URIs"
+   - This is the spring-created backend route handler for the google oauth login redirect
+3. Retrieve the Google Client ID and Client Secret
+   - Add both as ENV vars to your spring boot application
+4. Setup a local postgres database
+   - You can use the provided `backend/docker-compose.yml` file
+5. Add the other required ENV vars according to `backend/.env.example`
+6. Spring Profile `postgres` will load the available application properties `backend/src/main/resources/application-postgres.properties`
+7. There are some important settings here
+   - `server.servlet.session.cookie.domain=${COOKIE_DOMAIN:example.com}`
+     - Crucial, if your backend and frontend do not share the same domain
+       - e.g `backend.example.com` and `frontend.example.com`
+     - Assuming you have a wildcard ssl cert for `example.com`, add `example.com` as `COOKIE_DOMAIN` here
+   - `server.servlet.session.cookie.same-site=lax`
+     - The google login redirect will not work with `same-site=strict` and a wildcard domain
+   - the following settings are needed, when running the Spring Boot app behind a reverse proxy such as nginx. If these are not set, the internal "getProtocol" from Spring Boot will return `http` instead of `https` during the login flow, which will fail the Google OAuth redirect requirement of an redirect uri that starts with `https`
+     - `server.forward-headers-strategy=framework` 
+     - `server.tomcat.redirect-context-root=false`
+     - `server.tomcat.remoteip.host-header=X-Forwarded-Host`
+     - `server.tomcat.remoteip.internal-proxies=`
+     - `server.tomcat.remoteip.protocol-header-https-value=https`
+
+## Open Topics
+
+I cannot get CSRF / XSRF-Token to work. Therefore its disabled via the Spring Security config, not ideal, but also not a complete road-blocker. If you know how to get this to work with Spring Boot 3.x and e.g Next.JS, please contact me :)
