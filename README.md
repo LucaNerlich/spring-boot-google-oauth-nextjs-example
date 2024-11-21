@@ -53,6 +53,7 @@ https://console.cloud.google.com
 3. Start your Spring Boot app
    - via your IDE or build and run the jar `java -jar backend/build/libs/spring-boot-google-oauth-nextjs-example-0.0.1-SNAPSHOT.jar`
 4. Visit `http://localhost:3000`
+   - your frontend will fail to load, when the backend is not available, since the `frontend/middleware.ts` tries to fetch the current user on every page `const isAuth = await verifySession();`
 5. Click Login
    - follow the Google Login prompts
 6. Observe the intermediate redirect to your backend and immediate redirect to your frontend
