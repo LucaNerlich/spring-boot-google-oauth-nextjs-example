@@ -1,4 +1,4 @@
-# spring-boot-google-oauth-nextjs-example
+# Spring Boot Google OAuth NextJS Example
 An example Spring Boot project that sets up Google OAuth login with a Next.JS 15 app.
 
 Many Spring Boot OAuth examples stop after getting the app running on localhost and without a working logout.
