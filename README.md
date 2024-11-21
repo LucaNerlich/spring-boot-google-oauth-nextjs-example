@@ -1,8 +1,8 @@
 # spring-boot-google-oauth-nextjs-example
-An example spring boot project that setups Google OAuth Login with a Next.JS 15 app.
+An example Spring Boot project that sets up Google OAuth login with a Next.JS 15 app.
 
-Many Spring Boot OAuth examples stop after getting the app to run on localhost and without a working logout.
-This example aims to not make the same mistake and to provide a production ready `Spring Boot + Google OAuth` app.
+Many Spring Boot OAuth examples stop after getting the app running on localhost and without a working logout.
+This example aims to avoid making the same mistake and provide a production-ready Spring Boot + Google OAuth app.
 
 Important files:
 
@@ -38,11 +38,12 @@ https://console.cloud.google.com
      - Assuming you have a wildcard ssl cert for `example.com`, add `example.com` as `COOKIE_DOMAIN` here
    - `server.servlet.session.cookie.same-site=lax`
      - The Google login redirect will not work with `same-site=strict` and a wildcard domain
-   - the following settings are needed, when running the Spring Boot app behind a reverse proxy such as nginx. If these are not set, the internal "getProtocol" from Spring Boot will return `http` instead of `https` during the login flow, which will fail the Google OAuth redirect requirement of an redirect uri that starts with `https`
+   - The following settings are required when running the Spring Boot application behind a reverse proxy such as nginx. If these are not set, Spring Boot's internal `getProtocol()` will return `http` instead of `https` during the login flow, which will fail the Google OAuth redirect requirement for a redirect uri that starts with `https`.
      - `server.forward-headers-strategy=framework` 
      - `server.tomcat.redirect-context-root=false`
      - `server.tomcat.remoteip.host-header=X-Forwarded-Host`
      - `server.tomcat.remoteip.internal-proxies=`
+       - this is intentionally empty
      - `server.tomcat.remoteip.protocol-header-https-value=https`
 
 ## 3. Run the App
@@ -67,4 +68,6 @@ The backend provides a `me` GET endpoint (`backend/src/main/java/com/example/spr
 
 ## Open Topics
 
-I cannot get CSRF / XSRF-Token to work. Therefore its disabled via the Spring Security config, not ideal, but also not a complete road-blocker. If you know how to get this to work with Spring Boot 3.x and e.g Next.JS, please contact me :)
+I cannot get CSRF / XSRF tokens to work. So it is disabled via the Spring security config (`.csrf(AbstractHttpConfigurer::disable)`), not ideal but not a complete roadblock. If you know how to get this to work with Spring Boot 3.x and e.g. Next.JS, please contact me :)
+
+
