@@ -24,17 +24,20 @@ https://console.cloud.google.com
    - This is the spring-created backend route handler for the google oauth login redirect
 3. Retrieve the Google Client ID and Client Secret
    - Add both as ENV vars to your spring boot application
-4. Setup a local postgres database
+
+## 2. Setup your Spring Boot configuration
+
+1. Setup a local postgres database
    - You can use the provided `backend/docker-compose.yml` file
-5. Add the other required ENV vars according to `backend/.env.example`
-6. Spring Profile `postgres` will load the available application properties `backend/src/main/resources/application-postgres.properties`
-7. There are some important settings here
+2. Add the other required ENV vars according to `backend/.env.example`
+3. Spring Profile `postgres` will load the available application properties `backend/src/main/resources/application-postgres.properties`
+4. There are some important settings here
    - `server.servlet.session.cookie.domain=${COOKIE_DOMAIN:example.com}`
      - Crucial, if your backend and frontend do not share the same domain
        - e.g `backend.example.com` and `frontend.example.com`
      - Assuming you have a wildcard ssl cert for `example.com`, add `example.com` as `COOKIE_DOMAIN` here
    - `server.servlet.session.cookie.same-site=lax`
-     - The google login redirect will not work with `same-site=strict` and a wildcard domain
+     - The Google login redirect will not work with `same-site=strict` and a wildcard domain
    - the following settings are needed, when running the Spring Boot app behind a reverse proxy such as nginx. If these are not set, the internal "getProtocol" from Spring Boot will return `http` instead of `https` during the login flow, which will fail the Google OAuth redirect requirement of an redirect uri that starts with `https`
      - `server.forward-headers-strategy=framework` 
      - `server.tomcat.redirect-context-root=false`
